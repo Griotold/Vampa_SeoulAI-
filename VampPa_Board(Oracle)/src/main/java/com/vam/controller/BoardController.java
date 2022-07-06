@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vam.model.BoardVO;
+import com.vam.model.Criteria;
+import com.vam.model.PageMakerDTO;
 import com.vam.service.BoardService;
 
 @Controller
@@ -22,15 +24,28 @@ public class BoardController {
 	 @Autowired
 	 private BoardService bservice;
 	 
-	 /* 게시판 목록 페이지 접속 */
+	 /* 게시판 목록 페이지 접속(페이징 적용) */
 	 @GetMapping("/list")
-	 public String boardListGET(Model model) {
+	 public String boardListGET(Model model, Criteria cri) {
 		 log.info("게시판 목록 페이지 진입");
 		 //사실 return "list";를 실행중이다.
+		 //왜 String과 void 리턴타입이 같게 나올까?
+		 //servlet-context.xml파일에서
+		 //view.resolver가 앞에는 "/WEB-INF/views/"
+		 //뒤에는 ".jsp" />를 자동으로 붙여주면서 화면에 전달해주기 때문에
 		 
-		 model.addAttribute("list", bservice.getList());
+		 model.addAttribute("list", bservice.getListPaging(cri));
+		 
+		 int total = bservice.getTotal();
+		 
+		 PageMakerDTO pageMake = new PageMakerDTO(cri, total);
+	        
+	     model.addAttribute("pageMaker", pageMake); //화면에 전달
+		 
 		 return "board/list";
 	 }
+	 
+	 
 	 
 	 @GetMapping("/enroll")
 	 public void boardEnrollGET() {
@@ -59,17 +74,21 @@ public class BoardController {
      * URL에 파라미터가 누적되어 전달되는데 이런 기법을
      * URL Rewrite처리라고 한다.*/
     @GetMapping("/get")
-    public void boardGetPageGET(int bno, Model model) {
+    public void boardGetPageGET(int bno, Model model, Criteria cri) {
         
         model.addAttribute("pageInfo", bservice.getPage(bno));
+        
+        model.addAttribute("cri", cri);
         
     }
     
     /* 수정 페이지 이동 */
     @GetMapping("/modify")
-    public void boardModifyGET(int bno, Model model) {
+    public void boardModifyGET(int bno, Model model, Criteria cri) {
         
         model.addAttribute("pageInfo", bservice.getPage(bno));
+        
+        model.addAttribute("cri", cri);
         
     }
     /* 페이지 수정 */

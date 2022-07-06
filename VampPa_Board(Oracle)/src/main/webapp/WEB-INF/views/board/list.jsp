@@ -54,6 +54,24 @@
     border: 1px solid #ddd;
     font-weight: 600;
   }
+  .pageInfo{
+    list-style : none;
+    display: inline-block;
+    margin: 50px 0 0 100px;      
+  }
+  .pageInfo li{
+    float: left;
+    font-size: 20px;
+    margin-left: 18px;
+    padding: 7px;
+    font-weight: 500;
+  }
+ a:link {color:black; text-decoration: none;}
+ a:visited {color:black; text-decoration: none;}
+ a:hover {color:black; text-decoration: underline;}
+ 	.active{
+      background-color: #cdd5ec;
+  }
   </style>
 </head>
 <body>
@@ -85,7 +103,31 @@
             </tr>
         </c:forEach>	
 	</table>
-	<form id="moveForm" method="get">    
+	<!-- 페이징 영역 -->
+	<div class="pageInfo_wrap" >
+        <div class="pageInfo_area">
+ 			<ul id="pageInfo" class="pageInfo">
+ 			
+ 				<!-- 이전페이지 버튼 -->
+                <c:if test="${pageMaker.prev}">
+                    <li class="pageInfo_btn previous"><a href="${pageMaker.startPage-1}">Previous</a></li>
+                </c:if>
+ 				<!-- 각 번호 페이지 버튼 -->
+                <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+                    <li class="pageInfo_btn ${pageMaker.cri.pageNum == num ? "active":"" }"><a href="${num}">${num}</a></li>
+                	<!-- 컨트롤러에서 전달된 페이지 번호가 현재 반복문을 돌다가 나온 페이지 번호이면
+                	active라는 동적 클래스 추가 -->
+                </c:forEach>
+                <!-- 다음페이지 버튼 -->
+                <c:if test="${pageMaker.next}">
+                    <li class="pageInfo_btn next"><a href="${pageMaker.endPage + 1 }">Next</a></li>
+                </c:if> 
+            </ul>
+        </div>
+    </div>
+	<form id="moveForm" method="get">  
+		<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+        <input type="hidden" name="amount"  value="${pageMaker.cri.amount }">  
     </form>
 </div>
 <script>
@@ -129,6 +171,17 @@ $(document).ready(function(){
         moveForm.attr("action", "/board/get");
         moveForm.submit();
         
+    });
+    //페이지 이동
+ 	$(".pageInfo a").on("click", function(e){
+ 	
+        e.preventDefault();
+      	//name이 pageNum인 input태그의 값에다가 그놈의 href값으로 대입
+        moveForm.find("input[name='pageNum']").val($(this).attr("href"));
+        //action속성에 추가
+        moveForm.attr("action", "/board/list");
+        moveForm.submit();
+	          
     });
 </script>
 

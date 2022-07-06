@@ -1,7 +1,5 @@
 package com.vam.mapper;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -13,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vam.model.BoardVO;
+import com.vam.model.Criteria;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -97,5 +96,27 @@ public class BoardMapperTests {
          int result = mapper.delete(23);
          log.info("result : " + result);
          
+     }
+     /* 게시판 목록(페이징 적용)테스트 */
+     @Test
+     public void testGetListPaging() {
+         
+         Criteria cri = new Criteria();
+                    
+         //cri.setPageNum(2);
+         List list = mapper.getListPaging(cri);
+         
+         list.forEach(board -> log.info("" + board));
+         //람다식
+     }
+     
+     //
+     
+     /* 게시판 전체글의 수 가져오기 테스트 */
+     @Test
+     public void testGetTotal() {
+         
+         int total = mapper.getTotal();
+         log.info("등록된 총 글의 수 : " + total);
      }
 }
