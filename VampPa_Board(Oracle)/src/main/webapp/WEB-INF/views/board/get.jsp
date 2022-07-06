@@ -91,8 +91,8 @@ textarea{
 	let form = $("#infoForm");
 	
 	$("#list_btn").on("click", function(e){
-		form.find("#bno").remove();
-		form.attr("action", "/board/list");
+		form.find("#bno").remove(); //form 변수의 하위 요소중 id값이 bno를 선택하고 지워준다.
+		form.attr("action", "/board/list"); //action 속성이 "/board/list"인 것을 반환.
 		form.submit();
 	});
 	

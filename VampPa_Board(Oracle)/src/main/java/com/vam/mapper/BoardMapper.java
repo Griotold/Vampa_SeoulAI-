@@ -19,4 +19,8 @@ public interface BoardMapper {
     
     /* 게시글 수정 */
     public int modify(BoardVO board);
+    
+    /* 게시판 삭제 */
+    public int delete(int bno);
+    //삭제가 성공하면 1, 실패하면 0반환
 }

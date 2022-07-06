@@ -22,6 +22,7 @@ public class BoardController {
 	 @Autowired
 	 private BoardService bservice;
 	 
+	 /* 게시판 목록 페이지 접속 */
 	 @GetMapping("/list")
 	 public String boardListGET(Model model) {
 		 log.info("게시판 목록 페이지 진입");
@@ -81,6 +82,17 @@ public class BoardController {
         
         return "redirect:/board/list";
         
+    }
+    
+    /* 페이지 삭제 */
+    @PostMapping("/delete")
+    public String boardDeletePOST(int bno, RedirectAttributes rttr) {
+        
+        bservice.delete(bno);
+        
+        rttr.addFlashAttribute("result", "delete success");
+        
+        return "redirect:/board/list";
     }
 
 }
