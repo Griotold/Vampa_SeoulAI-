@@ -25,5 +25,5 @@ public interface BoardService {
     public int delete(int bno);
     
     /* 게시판 총 갯수 */
-    public int getTotal();
+    public int getTotal(Criteria cri);
 }

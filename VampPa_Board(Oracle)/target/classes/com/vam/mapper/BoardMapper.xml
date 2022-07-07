@@ -31,22 +31,53 @@
     
     </select>
     
-    <!-- Oracle -->
-    <!-- 게시물 목록(페이징) -->
+    <!-- 검색 조건문 -->
+    <sql id="criteria">
+        <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+            <foreach collection="typeArr" item="type">
+                <trim prefix="OR">
+                    <choose>
+                        <when test="type == 'T'.toString()">
+                            title like '%'||#{keyword}||'%' 
+                        </when>
+                        <when test="type == 'C'.toString()">
+                            content like '%'||#{keyword}||'%' 
+                        </when>
+                        <when test="type == 'W'.toString()">
+                            writer like '%'||#{keyword}||'%' 
+                        </when>
+                    </choose>
+                </trim>
+            </foreach>
+        </trim>
+    
+    </sql>
+    
     <!-- 게시물 목록(페이징) -->
     <select id="getListPaging" resultType="com.vam.model.BoardVO">
     
-    <![CDATA[
+    	<![CDATA[
         
         select bno, title, content, writer, regdate, updatedate from(
         
                 select /*+INDEX_DESC(vam_board pk_board) */ rownum  as rn, bno, title, content, writer, regdate, updatedate
                   
-                from vam_board where rownum <= #{pageNum} * #{amount}) 
+                from vam_board where rownum <= #{pageNum} * #{amount} 
                 
-        where rn > (#{pageNum} -1) * #{amount}
+    	]]>
+    			<!-- keyword가 null이 아니면 아래 추가 -->
+    			<!-- keyword가 null이 아래문장 무시 -->
+    			<if test="keyword != null">
+                    <include refid="criteria"></include>
+                   
+                </if>
     
-    ]]>
+    	<![CDATA[
+    
+    			)
+    	where rn > (#{pageNum} -1) * #{amount}
+    	]]>
+    	
     
     </select>
     
@@ -64,9 +95,20 @@
     </delete>
     
     <!-- 게시물 총 개숫 -->
+    <!-- 조건 추가 -->
     <select id="getTotal" resultType="int">
     
         select count(*) from vam_board
+        
+        <if test="keyword != null">
+        
+        	where bno > 0 <include refid="criteria"></include>
+        	<!-- bno > 0은 아무 의미 없는 조건. -->
+        	<!-- include 태그에 의해 삽입될 쿼리민우 and()형식이기 때문에 -->
+        	<!-- 구문 오류 방지를 위해 -->
+        	
+        	
+        </if>
     
     </select>
     

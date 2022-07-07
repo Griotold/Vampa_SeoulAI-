@@ -11,6 +11,15 @@ public class Criteria {
     /* 한 페이지 당 보여질 게시물 갯수 */
     private int amount;
     
+    /* 검색 키워드 */
+    private String keyword;
+    
+    /* 검색 타입 */
+    private String type;
+    
+    /* 검색 타입 배열 */
+    private String[] typeArr;
+    
     /* 기본 생성자 -> 기본 세팅 : pageNum = 1, amount = 10 */
     public Criteria() {
         this(1,10);
@@ -31,5 +40,16 @@ public class Criteria {
     
     // 롬복으로 게터 세터 toString 메소드 생성
     // 맨위 클래스 선언부 위에 @Data 
+    
+    //setter는 수정
+    public void setType(String type) {
+    	this.type = type;
+    	this.typeArr = type.split("");
+    	//배열로 변환하기 위해서 String 타입의 데이터를 
+    	//String 배열 타입 데이터로 변환해주는 
+    	//split()메서드를 사용
+    	
+    }
+    
     
 }

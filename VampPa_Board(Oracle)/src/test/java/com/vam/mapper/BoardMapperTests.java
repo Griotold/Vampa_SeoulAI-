@@ -113,10 +113,20 @@ public class BoardMapperTests {
      //
      
      /* 게시판 전체글의 수 가져오기 테스트 */
+//     @Test
+//     public void testGetTotal() {
+//         
+//         int total = mapper.getTotal();
+//         log.info("등록된 총 글의 수 : " + total);
+//     }
+     /* 키워드를 통한 게시판 전체글의 수 가져오기 테스트 */
      @Test
      public void testGetTotal() {
-         
-         int total = mapper.getTotal();
+         Criteria cri = new Criteria();
+         cri.setKeyword("mapper");
+         int total = mapper.getTotal(cri);
          log.info("등록된 총 글의 수 : " + total);
      }
+     
+     
 }

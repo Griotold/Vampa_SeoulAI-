@@ -36,7 +36,7 @@ public class BoardController {
 		 
 		 model.addAttribute("list", bservice.getListPaging(cri));
 		 
-		 int total = bservice.getTotal();
+		 int total = bservice.getTotal(cri);
 		 
 		 PageMakerDTO pageMake = new PageMakerDTO(cri, total);
 	        
@@ -75,9 +75,13 @@ public class BoardController {
      * URL Rewrite처리라고 한다.*/
     @GetMapping("/get")
     public void boardGetPageGET(int bno, Model model, Criteria cri) {
-        
+    	//value 객체 : bservice.getPage(bno)를
+    	//"pageInfo"에 추가한다.
+    	//View에서는 name으로 지정한 "pageInfo"를 통해서 value 객체를 사용한다.
         model.addAttribute("pageInfo", bservice.getPage(bno));
-        
+        //마찬가지로 cri라는 value객체를 
+        //"cri"에 추가한다.
+        //view에서 "cri"를 통해서 value 객체를 사용한다.
         model.addAttribute("cri", cri);
         
     }
@@ -85,9 +89,13 @@ public class BoardController {
     /* 수정 페이지 이동 */
     @GetMapping("/modify")
     public void boardModifyGET(int bno, Model model, Criteria cri) {
-        
+    	//value 객체 : bservice.getPage(bno)를
+    	//"pageInfo"에 추가한다.
+    	//View에서는 name으로 지정한 "pageInfo"를 통해서 value 객체를 사용한다.
         model.addAttribute("pageInfo", bservice.getPage(bno));
-        
+        //마찬가지로 cri라는 value객체를 
+        //"cri"에 추가한다.
+        //view에서 "cri"를 통해서 value 객체를 사용한다.
         model.addAttribute("cri", cri);
         
     }

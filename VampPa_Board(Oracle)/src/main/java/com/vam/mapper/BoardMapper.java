@@ -30,5 +30,5 @@ public interface BoardMapper {
     //삭제가 성공하면 1, 실패하면 0반환
     
     /* 게시글 총 갯수 */
-    public int getTotal();
+    public int getTotal(Criteria cri);
 }
